@@ -19,7 +19,7 @@ public class LifeSimulator {
         }
     }
 
-    public static void makeCycle(int i, int j, Space space) {
+    private static void makeCycle(int i, int j, Space space) {
         int currentAliveNeighbors = getAliveNeighbors(i, j, space);
 
         if (space.getCellValue(i, j) == Space.ALIVE){

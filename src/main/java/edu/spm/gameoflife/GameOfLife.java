@@ -5,6 +5,7 @@ import edu.spm.gameoflife.core.Initiator;
 import edu.spm.gameoflife.core.Space;
 import edu.spm.gameoflife.multithreaded.GameOfLifeMultithreaded;
 import edu.spm.gameoflife.sequential.GameOfLifeSequential;
+import edu.spm.gameoflife.skandium.GameOfLifeSkandium;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * GameOfLife
@@ -22,14 +24,19 @@ import java.util.concurrent.BrokenBarrierException;
  */
 public class GameOfLife {
 
-    public static void main(String[] args) throws InterruptedException, BrokenBarrierException, IOException {
+    private final static String SEQUENTIAL = "sequential";
+    private final static String MULTITHREADED = "multithreaded";
+    private final static String SKANDIUM = "skandium";
+
+    public static void main(String[] args) throws InterruptedException, BrokenBarrierException, IOException, ExecutionException {
         int defaultIterations = 1000,
                 defaultNthreads = Runtime.getRuntime().availableProcessors(),
                 defaultRows = 100,
                 defaultColumns = 100,
                 defaultScale = 4;
 
-        String defaultInitiator = "random";
+        String defaultInitiator = "random",
+                defaultComputation = "sequential";
         boolean defaultGraphic = false;
 
         int iterations,
@@ -37,7 +44,8 @@ public class GameOfLife {
                 rows,
                 columns,
                 scale;
-        String initiator;
+        String initiator,
+                computation;
         boolean graphic;
 
         Properties config = null;
@@ -56,18 +64,25 @@ public class GameOfLife {
         scale = Integer.parseInt(config.getProperty("SCALE", String.valueOf(defaultScale)));
         initiator = config.getProperty("INITIATOR", defaultInitiator);
         graphic = Boolean.parseBoolean(config.getProperty("GRAPHIC", String.valueOf(defaultGraphic)));
+        computation = config.getProperty("COMPUTATION", defaultComputation);
 
         Space space = Initiator.init(initiator, rows, columns);
 
         if (graphic)
             initGraphics(space, scale);
 
-        final long startTime = System.currentTimeMillis();
-        GameOfLifeMultithreaded.start(space, iterations, nThreads);
-        //GameOfLifeSequential.start(space, iterations);
-        final long endTime = System.currentTimeMillis();
+        switch (computation) {
+            case SEQUENTIAL:
+                GameOfLifeSequential.start(space, iterations);
+                break;
+            case MULTITHREADED:
+                GameOfLifeMultithreaded.start(space, iterations, nThreads);
+                break;
+            case SKANDIUM:
+                GameOfLifeSkandium.start(space, iterations, nThreads);
+                break;
+        }
 
-        System.out.println(endTime - startTime);
         System.exit(0);
     }
 
