@@ -71,18 +71,21 @@ public class GameOfLife {
         if (graphic)
             initGraphics(space, scale);
 
+        long executionTime = 0;
+
         switch (computation) {
             case SEQUENTIAL:
-                GameOfLifeSequential.start(space, iterations);
+                executionTime = GameOfLifeSequential.start(space, iterations);
                 break;
             case MULTITHREADED:
-                GameOfLifeMultithreaded.start(space, iterations, nThreads);
+                executionTime = GameOfLifeMultithreaded.start(space, iterations, nThreads);
                 break;
             case SKANDIUM:
-                GameOfLifeSkandium.start(space, iterations, nThreads);
+                executionTime = GameOfLifeSkandium.start(space, iterations, nThreads);
                 break;
         }
 
+        System.out.println("Execution time using " + computation + ": " + executionTime);
         System.exit(0);
     }
 

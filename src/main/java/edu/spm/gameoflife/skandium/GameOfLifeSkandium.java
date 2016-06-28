@@ -16,8 +16,9 @@ import java.util.concurrent.Future;
  */
 public class GameOfLifeSkandium {
 
-    public static void start(Space space, int iterations, int nThreads) throws ExecutionException, InterruptedException {
+    public static long start(Space space, int iterations, int nThreads) throws ExecutionException, InterruptedException {
 
+        /* initialization for nThreads */
         Skandium s = new Skandium(nThreads);
         For<Space> forLoop =
                 new For<Space>(
@@ -27,12 +28,13 @@ public class GameOfLifeSkandium {
                                 new Merger(space)),
                         iterations);
 
+        /* getting the output stream from the created skeleton */
         Stream<Space, Space> stream = s.newStream(forLoop);
         Future<Space> outSpace = stream.input(space);
         final long startTime = System.currentTimeMillis();
         outSpace.get();
         final long endTime = System.currentTimeMillis();
 
-        System.out.println(endTime - startTime);
+        return endTime - startTime;
     }
 }

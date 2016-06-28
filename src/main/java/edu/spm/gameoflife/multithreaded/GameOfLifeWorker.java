@@ -11,12 +11,12 @@ import java.util.concurrent.CyclicBarrier;
  *
  * @author Paolo Cifariello
  */
-public class ThreadConsumer implements Runnable {
+public class GameOfLifeWorker implements Runnable {
     Space space;
     int startRow, nRows, iterations;
     private final CyclicBarrier barrier;
 
-    public ThreadConsumer(Space s, int start, int n, int cycles, CyclicBarrier barrier) {
+    public GameOfLifeWorker(Space s, int start, int n, int cycles, CyclicBarrier barrier) {
         space = s;
         startRow = start;
         nRows = n;
