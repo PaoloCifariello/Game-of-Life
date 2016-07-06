@@ -6,6 +6,7 @@ import edu.spm.gameoflife.core.Space;
 import edu.spm.gameoflife.multithreaded.GameOfLifeMultithreaded;
 import edu.spm.gameoflife.sequential.GameOfLifeSequential;
 import edu.spm.gameoflife.skandium.GameOfLifeSkandium;
+import edu.spm.gameoflife.stream.GameOfLifeStream;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,7 @@ public class GameOfLife {
     private final static String SEQUENTIAL = "sequential";
     private final static String MULTITHREADED = "multithreaded";
     private final static String SKANDIUM = "skandium";
+    private final static String STREAM = "stream";
 
     public static void main(String[] args) throws InterruptedException, BrokenBarrierException, IOException, ExecutionException {
         int defaultIterations = 1000,
@@ -82,6 +84,9 @@ public class GameOfLife {
                 break;
             case SKANDIUM:
                 executionTime = GameOfLifeSkandium.start(space, iterations, nThreads);
+                break;
+            case STREAM:
+                executionTime = GameOfLifeStream.start(space, iterations, nThreads);
                 break;
         }
 
