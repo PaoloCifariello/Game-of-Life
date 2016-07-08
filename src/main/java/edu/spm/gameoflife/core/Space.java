@@ -3,7 +3,8 @@ package edu.spm.gameoflife.core;
 import java.util.Random;
 
 /**
- * GameOfLife
+ * This class contains information about a GOL Space, it stores values of all cells
+ * and contains methods to interact with those values.
  *
  * @author Paolo Cifariello
  */
@@ -29,14 +30,23 @@ public class Space {
         this.futureSpace = new byte[n][m];
     }
 
+    /**
+     *
+     * @return number of rows
+     */
     public int rows() {
         return n;
     }
 
+    /**
+     *
+     * @return number of columns
+     */
     public int columns() {
         return m;
     }
 
+    /** Initialize all cells to EMPTY */
     public void initialize() {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
@@ -47,31 +57,43 @@ public class Space {
     }
 
     /**
+     * Get value of a cell
      *
-     * @param i
-     * @param j
-     * @return
+     * @param i row value
+     * @param j column value
+     * @return the value of the cell identified
      */
     public byte getCellValue(int i, int j) {
         return currentSpace[i][j];
     }
 
     /**
+     * Set value of a cell
      *
-     * @param i
-     * @param j
-     * @param value
+     * @param i row value
+     * @param j column value
+     * @value the value to set
      */
     public void setCellValue(int i, int j, byte value) {
         futureSpace[i][j] = value;
     }
 
+    /**
+     * performs a swap of spaces (modifications and read are done on different spaces, whwn calling swap()
+     * modifications are "written" in the current space and can be read)
+     */
     public void swap() {
         byte[][] oldSpace = currentSpace;
         currentSpace = futureSpace;
         futureSpace = oldSpace;
     }
 
+    /**
+     * get a set of intervals that cover completely the space
+     *
+     * @param partitions number of partitions to do
+     * @return list of Interval that identify partitions
+     */
     public Interval[] split(int partitions) {
         int rows = rows();
 
@@ -79,17 +101,25 @@ public class Space {
         int extraRows = rows % partitions;
         int start = 0;
         int nRows;
-        Interval[] bounds = new Interval[partitions];
+        Interval[] intervals = new Interval[partitions];
 
         for (int j = 0; j < partitions; j++) {
-            nRows = rowsPerPartition + (extraRows-- > 0 ? 1:0);
-            bounds[j] = new Interval(start, nRows);
+            nRows = rowsPerPartition + (extraRows > 0 ? 1:0);
+            extraRows--;
+            intervals[j] = new Interval(start, nRows);
             start = start + nRows;
         }
 
-        return bounds;
+        return intervals;
     }
 
+    /**
+     * produce a String representation of a subset of the actual Space
+     *
+     * @param start starting row index
+     * @param nrows number of rows to consider
+     * @return String representation
+     */
     public String toString(int start, int nrows) {
         StringBuilder sb = new StringBuilder();
 
@@ -104,6 +134,11 @@ public class Space {
         return sb.toString();
     }
 
+    /**
+     * produce a String representation of the actual Space
+     *
+     * @return String representation
+     */
     public String toString() {
         return toString(0, n);
     }

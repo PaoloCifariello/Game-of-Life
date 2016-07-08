@@ -6,7 +6,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * GameOfLife
+ * This class permits to initialize a Space in a random way or using a CSV file.
+ * File must contains a list of x  y coordinates identifying ALIVE cells
  *
  * @author Paolo Cifariello
  */
@@ -14,7 +15,6 @@ public class Initiator {
 
     public static Space init(String initiator, int n, int m) {
         Space s;
-        int traslation = 20;
 
         if (initiator.equals("random")) {
             s = Space.Random(n, m);

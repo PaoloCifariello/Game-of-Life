@@ -1,5 +1,6 @@
 package edu.spm.gameoflife.stream;
 
+import edu.spm.gameoflife.GameOfLifeComputation;
 import edu.spm.gameoflife.core.Interval;
 import edu.spm.gameoflife.core.LifeSimulator;
 import edu.spm.gameoflife.core.Space;
@@ -18,9 +19,9 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GameOfLifeStream {
+public class GameOfLifeStream implements GameOfLifeComputation {
 
-    public static long start(Space space, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
+    public long start(Space space, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
         final long startTime = System.currentTimeMillis();
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
         GameOfLifeExecutor golEx = new GameOfLifeExecutor(space);
@@ -34,7 +35,6 @@ public class GameOfLifeStream {
                             .forEach(golEx::execute)).get();
             space.swap();
         }
-
         final long endTime = System.currentTimeMillis();
 
         return endTime - startTime;

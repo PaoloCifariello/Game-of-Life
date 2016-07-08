@@ -8,7 +8,7 @@ import java.nio.Buffer;
 import java.util.Arrays;
 
 /**
- * GameOfLife
+ * This class permits to draw the status of the GOL Space on the screen
  *
  * @author Paolo Cifariello
  */

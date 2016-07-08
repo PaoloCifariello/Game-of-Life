@@ -1,16 +1,28 @@
 package edu.spm.gameoflife.core;
 
 /**
- * GameOfLife
+ * This class performs the GOL life simulator algorithm
  *
  * @author Paolo Cifariello
  */
 public class LifeSimulator {
 
+    /**
+     * Perform a simulation step for all the Space
+     *
+     * @param space space on which the simulation step has to be performed
+     */
     public static void makeCycle(Space space) {
         makeCycle(space, 0, space.rows());
     }
 
+    /**
+     * Perform a simulation step on a portion of a Space
+     *
+     * @param space space on which the simulation step has to be performed
+     * @param startRow index of starting row from which the simulation has to be performed
+     * @param nRows number of rows to consider for the simulation
+     */
     public static void makeCycle(Space space, int startRow, int nRows) {
         for (int i = startRow; i < startRow + nRows; i++) {
             for (int j = 0; j < space.columns(); j++) {
@@ -19,28 +31,36 @@ public class LifeSimulator {
         }
     }
 
+    /**
+     * Perform a simulation step on a single cell
+     *
+     * @param i row index of the cell
+     * @param j columns index of the cell
+     * @param space space on which the simulation step has to be performed
+     */
     private static void makeCycle(int i, int j, Space space) {
         int currentAliveNeighbors = getAliveNeighbors(i, j, space);
+        byte cellCurrentValue = space.getCellValue(i, j);
+        byte cellNextValue;
 
-        if (space.getCellValue(i, j) == Space.ALIVE){
-            switch(currentAliveNeighbors){
-                case 2: space.setCellValue(i, j, Space.ALIVE);
-                    break;
-                case 3: space.setCellValue(i, j, Space.ALIVE);
-                    break;
-                default: space.setCellValue(i, j, Space.EMPTY);
-                    break;
-            }
-        } else {
-            switch (currentAliveNeighbors){
-                case 3: space.setCellValue(i, j, Space.ALIVE);
-                    break;
-                default: space.setCellValue(i, j, Space.EMPTY);
-                    break;
-            }
-        }
+        if (currentAliveNeighbors == 2 && cellCurrentValue == Space.ALIVE)
+            cellNextValue = Space.ALIVE;
+        else if (currentAliveNeighbors == 3)
+            cellNextValue = Space.ALIVE;
+        else
+            cellNextValue = Space.EMPTY;
+
+        space.setCellValue(i, j, cellNextValue);
     }
 
+    /**
+     * Get number of alive neighbors of a specific cell
+     *
+     * @param i row index of the cell
+     * @param j columns index of the cell
+     * @param space space considered
+     * @return number of neighobrs alive
+     */
     public static int getAliveNeighbors(int i, int j, Space space) {
         int n = space.rows(), m = space.columns();
         int prevRow = i - 1, succRow = i + 1, prevColumn = j - 1, succColumn = j + 1;

@@ -1,5 +1,6 @@
 package edu.spm.gameoflife.multithreaded;
 
+import edu.spm.gameoflife.GameOfLifeComputation;
 import edu.spm.gameoflife.core.Interval;
 import edu.spm.gameoflife.core.Space;
 
@@ -10,9 +11,9 @@ import java.util.concurrent.*;
  *
  * @author Paolo Cifariello
  */
-public class GameOfLifeMultithreaded {
+public class GameOfLifeMultithreaded implements GameOfLifeComputation {
 
-    public static long start(Space space, int iterations, int nThreads) throws InterruptedException, BrokenBarrierException {
+    public long start(Space space, int iterations, int nThreads) throws InterruptedException, BrokenBarrierException {
         final CyclicBarrier barrier = new CyclicBarrier(nThreads, space::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 

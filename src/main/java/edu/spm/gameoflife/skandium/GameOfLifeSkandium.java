@@ -4,6 +4,7 @@ import cl.niclabs.skandium.Skandium;
 import cl.niclabs.skandium.Stream;
 import cl.niclabs.skandium.skeletons.For;
 import cl.niclabs.skandium.skeletons.Map;
+import edu.spm.gameoflife.GameOfLifeComputation;
 import edu.spm.gameoflife.core.Space;
 
 import java.util.concurrent.ExecutionException;
@@ -14,9 +15,9 @@ import java.util.concurrent.Future;
  *
  * @author Paolo Cifariello
  */
-public class GameOfLifeSkandium {
+public class GameOfLifeSkandium implements GameOfLifeComputation {
 
-    public static long start(Space space, int iterations, int nThreads) throws ExecutionException, InterruptedException {
+    public long start(Space space, int iterations, int nThreads) throws ExecutionException, InterruptedException {
 
         /* initialization for nThreads */
         Skandium s = new Skandium(nThreads);
