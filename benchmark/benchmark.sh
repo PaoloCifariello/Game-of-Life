@@ -44,6 +44,14 @@ if [ -z "${f}" ]; then
     f=/dev/stdout
 fi
 
+JAVA_PATH="${JAVA_HOME}"
+
+if [ -z "${JAVA_PATH}" ]; then
+    JAVA_PATH="java"
+else
+    JAVA_PATH+="/bin/java"
+fi;
+
 PROPERTIES_FILE="${CURRENT_DIR}/test.properties"
 echo "ITERATIONS=${i}" > ${PROPERTIES_FILE}
 echo "ROWS=${s}" >> ${PROPERTIES_FILE}
@@ -52,7 +60,7 @@ echo "COMPUTATION=${c}" >> ${PROPERTIES_FILE}
 
 TOTAL_TIME=0
 for i in $(seq 1 $r); do
-    O="`java -jar ${CURRENT_DIR}/../target/GameOfLife-1.0.jar ${PROPERTIES_FILE}`"
+    O="`${JAVA_PATH} -jar ${CURRENT_DIR}/../target/GameOfLife-1.0.jar ${PROPERTIES_FILE}`"
     echo "${i}/${r} -> ${O}" >> ${f}
     TOTAL_TIME=$((${TOTAL_TIME}+${O}))
 done
