@@ -13,7 +13,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ExecutionException;
@@ -35,7 +34,8 @@ public class GameOfLife {
                 defaultNthreads = Runtime.getRuntime().availableProcessors(),
                 defaultRows = 100,
                 defaultColumns = 100,
-                defaultScale = 4;
+                defaultScale = 1,
+                defaultOffset = 0;
 
         String defaultInitiator = "random",
                 defaultComputation = "sequential";
@@ -45,7 +45,8 @@ public class GameOfLife {
                 nThreads,
                 rows,
                 columns,
-                scale;
+                scale,
+                offset;
         String initiator,
                 computation;
         boolean graphic;
@@ -66,12 +67,13 @@ public class GameOfLife {
         scale = Integer.parseInt(config.getProperty("SCALE", String.valueOf(defaultScale)));
         initiator = config.getProperty("INITIATOR", defaultInitiator);
         graphic = Boolean.parseBoolean(config.getProperty("GRAPHIC", String.valueOf(defaultGraphic)));
+        offset = Integer.parseInt(config.getProperty("OFFSET", String.valueOf(defaultOffset)));
         computation = config.getProperty("COMPUTATION", defaultComputation);
 
         Space space = Initiator.init(initiator, rows, columns);
 
         if (graphic)
-            initGraphics(space, scale);
+            initGraphics(space, scale, offset);
 
         long executionTime;
         GameOfLifeComputation golComputation = null;
@@ -93,7 +95,8 @@ public class GameOfLife {
 
         if (golComputation != null) {
             executionTime = golComputation.start(space, iterations, nThreads);
-            System.out.println("Execution time using " + computation + ": " + executionTime);
+            //System.out.println("Execution time using " + computation + ": " + executionTime);
+            System.out.println(executionTime);
         }
         System.exit(0);
     }
@@ -108,12 +111,12 @@ public class GameOfLife {
         return props;
     }
 
-    private static void initGraphics(Space space, int scale) {
+    private static void initGraphics(Space space, int scale, int offset) {
         JFrame frame = new JFrame("Game of Life");
         Graphics g = frame.getGraphics();
         frame.pack();
         Insets insets = frame.getInsets();
-        frame.getContentPane().add(new GameOfLifeGUI(space, scale), BorderLayout.CENTER);
+        frame.getContentPane().add(new GameOfLifeGUI(space, scale, offset), BorderLayout.CENTER);
         frame.paint(g);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(insets.left + insets.right + (space.columns() * scale), insets.top + insets.bottom + (space.rows() * scale));

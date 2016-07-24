@@ -24,7 +24,6 @@ public class GameOfLifeMultithreaded implements GameOfLifeComputation {
         for (int j = 0; j < nThreads; j++){
             pool.submit(new GameOfLifeWorker(space, bounds[j].startRow, bounds[j].nRows, iterations, barrier));
         }
-
         /* prevent newer tasks to be submitted */
         pool.shutdown();
         /* wait at most 2 minutes for termination of all tasks */

@@ -22,6 +22,7 @@ public class Initiator {
             s = new Space(n, m);
             s.initialize();
 
+            /* set all cell to EMPTY */
             initFromFile(s, initiator);
         }
 
@@ -32,17 +33,27 @@ public class Initiator {
         try {
             InputStream is = Initiator.class.getClassLoader().getResourceAsStream(initiator + ".lif");
             CSVReader reader = new CSVReader(new InputStreamReader(is), ' ');
+            int rows = space.rows(),
+                columns = space.columns();
+
             String [] nextLine;
             while ((nextLine = reader.readNext()) != null) {
-                int x = Integer.parseInt(nextLine[0]) + 30,
-                        y = Integer.parseInt(nextLine[1]) + 30;
+                int x = normalize(Integer.parseInt(nextLine[0]), columns),
+                        y = normalize(Integer.parseInt(nextLine[1]), rows);
 
-                space.setCellValue(x, y, Space.ALIVE);
+                space.setCellValue(y, x, Space.ALIVE);
             }
 
             space.swap();
         } catch (IOException e) {
             System.err.println("Cannot load initiator");
         }
+    }
+
+    private static int normalize(int coordinate, int max) {
+        while (coordinate < 0)
+            coordinate += max;
+
+        return coordinate % max;
     }
 }

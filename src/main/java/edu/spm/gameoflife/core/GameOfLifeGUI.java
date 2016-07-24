@@ -14,7 +14,8 @@ import java.util.Arrays;
  */
 public class GameOfLifeGUI extends JPanel {
     private final Space space;
-    private int scale = 1;
+    private int scale;
+    private int offset;
     private final int aliveColor = 65000;
     private final int emptyColor = 0;
 
@@ -23,12 +24,14 @@ public class GameOfLifeGUI extends JPanel {
         space = s;
     }
 
-    public GameOfLifeGUI(Space s, int scale) {
+    public GameOfLifeGUI(Space s, int scale, int offset) {
         this(s);
         this.scale = scale;
+        this.offset = offset;
     }
     private void updateScreen(Graphics g) throws InterruptedException {
         BufferedImage bufferedImage = new BufferedImage(space.columns() * scale, space.rows() * scale, BufferedImage.TYPE_INT_RGB);
+
         for (int i = 0; i < space.rows(); i++) {
             for (int j = 0; j < space.columns(); j++) {
                 fillRGB(space, i, j, bufferedImage);
@@ -48,8 +51,8 @@ public class GameOfLifeGUI extends JPanel {
 
     private void fillRGB(Space space, int i, int j, BufferedImage bufferedImage) {
         int rgbValue = getColor(space.getCellValue(i, j)),
-                startX = j * scale,
-                startY = i * scale;
+                startX = ((j + offset) % space.rows()) * scale,
+                startY = ((i + offset) % space.columns()) * scale;
 
         for (int y = startY; y < startY + scale; y++) {
             for (int x = startX; x < startX + scale; x++) {

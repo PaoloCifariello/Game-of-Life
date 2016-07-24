@@ -85,4 +85,26 @@ public class LifeSimulator {
                 + space.getCellValue(succRow, j)
                 + space.getCellValue(succRow, succColumn);
     }
+
+    /**
+     * Get number of alive neighbors of a specific cell
+     *
+     * @param i row index of the cell
+     * @param j columns index of the cell
+     * @param space space considered
+     * @return number of neighobrs alive
+     */
+    public static int getAliveNeighborsModulo(int i, int j, Space space) {
+        int n = space.rows(), m = space.columns();
+        int prevRow = (i - 1 + n) % n, succRow = (i + 1) % n, prevColumn = (j - 1 + m) % m, succColumn = (j + 1) % m;
+
+        return space.getCellValue(prevRow, prevColumn)
+                + space.getCellValue(prevRow, j)
+                + space.getCellValue(prevRow, succColumn)
+                + space.getCellValue(i, prevColumn)
+                + space.getCellValue(i, succColumn)
+                + space.getCellValue(succRow, prevColumn)
+                + space.getCellValue(succRow, j)
+                + space.getCellValue(succRow, succColumn);
+    }
 }
