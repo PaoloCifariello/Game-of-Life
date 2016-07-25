@@ -13,16 +13,18 @@ import java.util.concurrent.*;
  */
 public class GameOfLifeMultithreaded implements GameOfLifeComputation {
 
-    public long start(Space space, int iterations, int nThreads) throws InterruptedException, BrokenBarrierException {
-        final CyclicBarrier barrier = new CyclicBarrier(nThreads, space::swap);
+    public long start(Space space, int nIterations, int nThreads) throws InterruptedException, BrokenBarrierException {
+        CyclicBarrier barrier = new CyclicBarrier(nThreads, space::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
         final long startTime = System.currentTimeMillis();
         /* split the space into nThreads intervals */
-        Interval[] bounds = space.split(nThreads);
+        Interval[] invervals = space.split(nThreads);
         /* insert a new task/thread for each interval inside the thread pool */
         for (int j = 0; j < nThreads; j++){
-            pool.submit(new GameOfLifeWorker(space, bounds[j].startRow, bounds[j].nRows, iterations, barrier));
+            pool.submit(
+                    new GameOfLifeWorker(space, invervals[j], nIterations, barrier)
+            );
         }
         /* prevent newer tasks to be submitted */
         pool.shutdown();

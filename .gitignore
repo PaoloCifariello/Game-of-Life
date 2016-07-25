@@ -13,3 +13,5 @@ hs_err_pid*
 
 # OS files
 .DS_Store
+
+benchmark/test.properties

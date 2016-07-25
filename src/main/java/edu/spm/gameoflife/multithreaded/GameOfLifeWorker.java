@@ -1,5 +1,6 @@
 package edu.spm.gameoflife.multithreaded;
 
+import edu.spm.gameoflife.core.Interval;
 import edu.spm.gameoflife.core.LifeSimulator;
 import edu.spm.gameoflife.core.Space;
 
@@ -13,20 +14,20 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class GameOfLifeWorker implements Runnable {
     Space space;
-    int startRow, nRows, iterations;
+    int startRow, nRows, nIterations;
     private final CyclicBarrier barrier;
 
-    public GameOfLifeWorker(Space s, int start, int n, int cycles, CyclicBarrier barrier) {
+    public GameOfLifeWorker(Space s, Interval bounds, int cycles, CyclicBarrier barrier) {
         space = s;
-        startRow = start;
-        nRows = n;
-        iterations = cycles;
+        startRow = bounds.startRow;
+        nRows = bounds.nRows;
+        nIterations = cycles;
         this.barrier = barrier;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < iterations; i++) {
+        for (int i = 0; i < nIterations; i++) {
             LifeSimulator.makeCycle(space, startRow, nRows);
             try {
                 barrier.await();

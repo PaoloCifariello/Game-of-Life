@@ -19,18 +19,17 @@ import java.util.stream.Stream;
 public class GameOfLifeStream implements GameOfLifeComputation {
 
     public long start(Space space, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
-        final CyclicBarrier barrier = new CyclicBarrier(nThreads, space::swap);
+        CyclicBarrier barrier = new CyclicBarrier(nThreads, space::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
         final long startTime = System.currentTimeMillis();
-        GameOfLifeExecutor golEx = new GameOfLifeExecutor(space, nIterations, barrier);
         Interval[] intervals = space.split(nThreads);
 
         // https://blog.krecan.net/2014/03/18/how-to-specify-thread-pool-for-java-8-parallel-streams/
         pool.submit(
                 () -> Arrays.stream(intervals)
                         .parallel()
-                        .forEach(golEx::execute)).get();
+                        .forEach(new GameOfLifeExecutor(space, nIterations, barrier)::execute)).get();
 
         final long endTime = System.currentTimeMillis();
 

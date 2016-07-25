@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 COMPUTATIONS=("sequential" "multithreaded" "stream" "skandium")
-DEFAULT_SIZE=500
-DEFAULT_ITERATIONS=100
+DEFAULT_SIZE=1000
+DEFAULT_ITERATIONS=500
 DEFAULT_REPETITIONS=5
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
  */
 public class GameOfLifeSkandium implements GameOfLifeComputation {
 
-    public long start(Space space, int iterations, int nThreads) throws ExecutionException, InterruptedException {
+    public long start(Space space, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
 
         /* initialization for nThreads */
         Skandium s = new Skandium(nThreads);
@@ -27,7 +27,7 @@ public class GameOfLifeSkandium implements GameOfLifeComputation {
                                 new Splitter(nThreads),
                                 new Executor(space),
                                 new Merger(space)),
-                        iterations);
+                        nIterations);
 
         /* getting the output stream from the created skeleton */
         Stream<Space, Space> stream = s.newStream(forLoop);
