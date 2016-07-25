@@ -14,21 +14,12 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class GameOfLifeExecutor {
     private Space space;
-    private int nIterations;
-    private CyclicBarrier barrier;
 
-    public GameOfLifeExecutor(Space space, int nIterations, CyclicBarrier barrier) {
+    public GameOfLifeExecutor(Space space) {
         this.space = space;
-        this.nIterations = nIterations;
-        this.barrier = barrier;
     }
 
     public void execute(Interval interval) {
-        for (int i = 0; i < nIterations; i++) {
-            LifeSimulator.makeCycle(space, interval.startRow, interval.nRows);
-            try {
-                barrier.await();
-            } catch (InterruptedException | BrokenBarrierException ex) { }
-        }
+        LifeSimulator.makeCycle(space, interval.startRow, interval.nRows);
     }
 }
