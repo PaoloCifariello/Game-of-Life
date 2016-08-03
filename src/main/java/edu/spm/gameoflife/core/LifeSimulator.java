@@ -5,7 +5,7 @@ package edu.spm.gameoflife.core;
  *
  * @author Paolo Cifariello
  */
-public class LifeSimulator {
+public abstract class LifeSimulator {
 
     /**
      * Perform a simulation step for all the Universe
