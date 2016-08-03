@@ -1,6 +1,6 @@
 package edu.spm.gameoflife;
 
-import edu.spm.gameoflife.core.Space;
+import edu.spm.gameoflife.core.Universe;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ExecutionException;
@@ -11,5 +11,5 @@ import java.util.concurrent.ExecutionException;
  * @author Paolo Cifariello
  */
 public interface GameOfLifeComputation {
-    long start(Space space, int nIterations, int nThreads) throws InterruptedException, BrokenBarrierException, ExecutionException;
+    long start(Universe universe, int nIterations, int nThreads) throws InterruptedException, BrokenBarrierException, ExecutionException;
 }

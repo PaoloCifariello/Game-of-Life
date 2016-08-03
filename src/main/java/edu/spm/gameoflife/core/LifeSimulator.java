@@ -8,25 +8,25 @@ package edu.spm.gameoflife.core;
 public class LifeSimulator {
 
     /**
-     * Perform a simulation step for all the Space
+     * Perform a simulation step for all the Universe
      *
-     * @param space space on which the simulation step has to be performed
+     * @param universe universe on which the simulation step has to be performed
      */
-    public static void makeCycle(Space space) {
-        makeCycle(space, 0, space.rows());
+    public static void makeCycle(Universe universe) {
+        makeCycle(universe, 0, universe.rows());
     }
 
     /**
-     * Perform a simulation step on a portion of a Space
+     * Perform a simulation step on a portion of a Universe
      *
-     * @param space space on which the simulation step has to be performed
+     * @param universe universe on which the simulation step has to be performed
      * @param startRow index of starting row from which the simulation has to be performed
      * @param nRows number of rows to consider for the simulation
      */
-    public static void makeCycle(Space space, int startRow, int nRows) {
+    public static void makeCycle(Universe universe, int startRow, int nRows) {
         for (int i = startRow; i < startRow + nRows; i++) {
-            for (int j = 0; j < space.columns(); j++) {
-                makeCycle(i, j, space);
+            for (int j = 0; j < universe.columns(); j++) {
+                makeCycle(i, j, universe);
             }
         }
     }
@@ -36,21 +36,21 @@ public class LifeSimulator {
      *
      * @param i row index of the cell
      * @param j columns index of the cell
-     * @param space space on which the simulation step has to be performed
+     * @param universe universe on which the simulation step has to be performed
      */
-    private static void makeCycle(int i, int j, Space space) {
-        int currentAliveNeighbors = getAliveNeighbors(i, j, space);
-        byte cellCurrentValue = space.getCellValue(i, j);
+    private static void makeCycle(int i, int j, Universe universe) {
+        int currentAliveNeighbors = getAliveNeighbors(i, j, universe);
+        byte cellCurrentValue = universe.getCellValue(i, j);
         byte cellNextValue;
 
-        if (currentAliveNeighbors == 2 && cellCurrentValue == Space.ALIVE)
-            cellNextValue = Space.ALIVE;
+        if (currentAliveNeighbors == 2 && cellCurrentValue == Universe.ALIVE)
+            cellNextValue = Universe.ALIVE;
         else if (currentAliveNeighbors == 3)
-            cellNextValue = Space.ALIVE;
+            cellNextValue = Universe.ALIVE;
         else
-            cellNextValue = Space.EMPTY;
+            cellNextValue = Universe.EMPTY;
 
-        space.setCellValue(i, j, cellNextValue);
+        universe.setCellValue(i, j, cellNextValue);
     }
 
     /**
@@ -58,11 +58,11 @@ public class LifeSimulator {
      *
      * @param i row index of the cell
      * @param j columns index of the cell
-     * @param space space considered
+     * @param universe universe considered
      * @return number of neighobrs alive
      */
-    public static int getAliveNeighbors(int i, int j, Space space) {
-        int n = space.rows(), m = space.columns();
+    public static int getAliveNeighbors(int i, int j, Universe universe) {
+        int n = universe.rows(), m = universe.columns();
         int prevRow = i - 1, succRow = i + 1, prevColumn = j - 1, succColumn = j + 1;
 
         if (i == 0)
@@ -76,14 +76,14 @@ public class LifeSimulator {
             succColumn = 0;
 
 
-        return space.getCellValue(prevRow, prevColumn)
-                + space.getCellValue(prevRow, j)
-                + space.getCellValue(prevRow, succColumn)
-                + space.getCellValue(i, prevColumn)
-                + space.getCellValue(i, succColumn)
-                + space.getCellValue(succRow, prevColumn)
-                + space.getCellValue(succRow, j)
-                + space.getCellValue(succRow, succColumn);
+        return universe.getCellValue(prevRow, prevColumn)
+                + universe.getCellValue(prevRow, j)
+                + universe.getCellValue(prevRow, succColumn)
+                + universe.getCellValue(i, prevColumn)
+                + universe.getCellValue(i, succColumn)
+                + universe.getCellValue(succRow, prevColumn)
+                + universe.getCellValue(succRow, j)
+                + universe.getCellValue(succRow, succColumn);
     }
 
     /**
@@ -91,20 +91,20 @@ public class LifeSimulator {
      *
      * @param i row index of the cell
      * @param j columns index of the cell
-     * @param space space considered
+     * @param universe universe considered
      * @return number of neighobrs alive
      */
-    public static int getAliveNeighborsModulo(int i, int j, Space space) {
-        int n = space.rows(), m = space.columns();
+    public static int getAliveNeighborsModulo(int i, int j, Universe universe) {
+        int n = universe.rows(), m = universe.columns();
         int prevRow = (i - 1 + n) % n, succRow = (i + 1) % n, prevColumn = (j - 1 + m) % m, succColumn = (j + 1) % m;
 
-        return space.getCellValue(prevRow, prevColumn)
-                + space.getCellValue(prevRow, j)
-                + space.getCellValue(prevRow, succColumn)
-                + space.getCellValue(i, prevColumn)
-                + space.getCellValue(i, succColumn)
-                + space.getCellValue(succRow, prevColumn)
-                + space.getCellValue(succRow, j)
-                + space.getCellValue(succRow, succColumn);
+        return universe.getCellValue(prevRow, prevColumn)
+                + universe.getCellValue(prevRow, j)
+                + universe.getCellValue(prevRow, succColumn)
+                + universe.getCellValue(i, prevColumn)
+                + universe.getCellValue(i, succColumn)
+                + universe.getCellValue(succRow, prevColumn)
+                + universe.getCellValue(succRow, j)
+                + universe.getCellValue(succRow, succColumn);
     }
 }

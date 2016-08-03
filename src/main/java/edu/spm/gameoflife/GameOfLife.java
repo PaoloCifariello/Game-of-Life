@@ -2,7 +2,7 @@ package edu.spm.gameoflife;
 
 import edu.spm.gameoflife.core.GameOfLifeGUI;
 import edu.spm.gameoflife.core.Initiator;
-import edu.spm.gameoflife.core.Space;
+import edu.spm.gameoflife.core.Universe;
 import edu.spm.gameoflife.multithreaded.GameOfLifeMultithreaded;
 import edu.spm.gameoflife.sequential.GameOfLifeSequential;
 import edu.spm.gameoflife.skandium.GameOfLifeSkandium;
@@ -70,10 +70,10 @@ public class GameOfLife {
         offset = Integer.parseInt(config.getProperty("OFFSET", String.valueOf(defaultOffset)));
         computation = config.getProperty("COMPUTATION", defaultComputation);
 
-        Space space = Initiator.init(initiator, rows, columns);
+        Universe universe = Initiator.init(initiator, rows, columns);
 
         if (graphic)
-            initGraphics(space, scale, offset);
+            initGraphics(universe, scale, offset);
 
         long executionTime;
         GameOfLifeComputation golComputation = null;
@@ -94,7 +94,7 @@ public class GameOfLife {
         }
 
         if (golComputation != null) {
-            executionTime = golComputation.start(space, iterations, nThreads);
+            executionTime = golComputation.start(universe, iterations, nThreads);
             //System.out.println("Execution time using " + computation + ": " + executionTime);
             System.out.println(executionTime);
         }
@@ -111,15 +111,15 @@ public class GameOfLife {
         return props;
     }
 
-    private static void initGraphics(Space space, int scale, int offset) {
+    private static void initGraphics(Universe universe, int scale, int offset) {
         JFrame frame = new JFrame("Game of Life");
         Graphics g = frame.getGraphics();
         frame.pack();
         Insets insets = frame.getInsets();
-        frame.getContentPane().add(new GameOfLifeGUI(space, scale, offset), BorderLayout.CENTER);
+        frame.getContentPane().add(new GameOfLifeGUI(universe, scale, offset), BorderLayout.CENTER);
         frame.paint(g);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(insets.left + insets.right + (space.columns() * scale), insets.top + insets.bottom + (space.rows() * scale));
+        frame.setSize(insets.left + insets.right + (universe.columns() * scale), insets.top + insets.bottom + (universe.rows() * scale));
         frame.setVisible(true);
     }
 }

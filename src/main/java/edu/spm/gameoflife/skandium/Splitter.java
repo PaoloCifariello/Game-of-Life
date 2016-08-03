@@ -2,14 +2,14 @@ package edu.spm.gameoflife.skandium;
 
 import cl.niclabs.skandium.muscles.Split;
 import edu.spm.gameoflife.core.Interval;
-import edu.spm.gameoflife.core.Space;
+import edu.spm.gameoflife.core.Universe;
 
 /**
  * GameOfLife
  *
  * @author Paolo Cifariello
  */
-public class Splitter implements Split<Space, Interval> {
+public class Splitter implements Split<Universe, Interval> {
     private int nThreads;
     Interval[] splitted = null;
 
@@ -18,11 +18,11 @@ public class Splitter implements Split<Space, Interval> {
     }
 
     @Override
-    public Interval[] split(Space space) throws Exception {
+    public Interval[] split(Universe universe) throws Exception {
         if (this.splitted != null)
             return this.splitted;
 
-        this.splitted = space.split(nThreads);
+        this.splitted = universe.split(nThreads);
         return this.splitted;
     }
 }

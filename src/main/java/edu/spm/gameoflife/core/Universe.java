@@ -3,31 +3,31 @@ package edu.spm.gameoflife.core;
 import java.util.Random;
 
 /**
- * This class contains information about a GOL Space, it stores values of all cells
+ * This class contains information about a GOL Universe, it stores values of all cells
  * and contains methods to interact with those values.
  *
  * @author Paolo Cifariello
  */
-public class Space {
+public class Universe {
     public static byte EMPTY = 0;
     public static byte ALIVE = 1;
 
     private int n;
     private int m;
 
-    private byte[][] currentSpace;
-    private byte[][] futureSpace;
+    private byte[][] currentUniverse;
+    private byte[][] futureUniverse;
     /**
      *
-     * @param n number of rows of the space
-     * @param m number of columns of the space
+     * @param n number of rows of the universe
+     * @param m number of columns of the universe
      */
-    public Space(int n, int m)  {
+    public Universe(int n, int m)  {
         this.n = n;
         this.m = m;
 
-        this.currentSpace = new byte[n][m];
-        this.futureSpace = new byte[n][m];
+        this.currentUniverse = new byte[n][m];
+        this.futureUniverse = new byte[n][m];
     }
 
     /**
@@ -50,8 +50,8 @@ public class Space {
     public void initialize() {
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                currentSpace[i][j] = EMPTY;
-                futureSpace[i][j] = EMPTY;
+                currentUniverse[i][j] = EMPTY;
+                futureUniverse[i][j] = EMPTY;
             }
         }
     }
@@ -64,7 +64,7 @@ public class Space {
      * @return the value of the cell identified
      */
     public byte getCellValue(int i, int j) {
-        return currentSpace[i][j];
+        return currentUniverse[i][j];
     }
 
     /**
@@ -75,21 +75,21 @@ public class Space {
      * @value the value to set
      */
     public void setCellValue(int i, int j, byte value) {
-        futureSpace[i][j] = value;
+        futureUniverse[i][j] = value;
     }
 
     /**
-     * performs a swap of spaces (modifications and read are done on different spaces, whwn calling swap()
-     * modifications are "written" in the current space and can be read)
+     * performs a swap of universes (modifications and read are done on different universes, after calling swap()
+     * modifications are "written" in the current universe and can be read)
      */
     public void swap() {
-        byte[][] oldSpace = currentSpace;
-        currentSpace = futureSpace;
-        futureSpace = oldSpace;
+        byte[][] oldUniverse = currentUniverse;
+        currentUniverse = futureUniverse;
+        futureUniverse = oldUniverse;
     }
 
     /**
-     * get a set of intervals that cover completely the space
+     * get a set of intervals that completely covers the universe
      *
      * @param partitions number of partitions to do
      * @return list of Interval that identify partitions
@@ -114,7 +114,7 @@ public class Space {
     }
 
     /**
-     * produce a String representation of a subset of the actual Space
+     * produce a String representation of a subset of the actual Universe
      *
      * @param start starting row index
      * @param nrows number of rows to consider
@@ -125,7 +125,7 @@ public class Space {
 
         for (int i = start; i < start + nrows; i++) {
             for (int j = 0; j < m; j++) {
-                sb.append(currentSpace[i][j] + "\t");
+                sb.append(currentUniverse[i][j] + "\t");
             }
             sb.append("\n");
         }
@@ -135,7 +135,7 @@ public class Space {
     }
 
     /**
-     * produce a String representation of the actual Space
+     * produce a String representation of the actual Universe
      *
      * @return String representation
      */
@@ -143,14 +143,14 @@ public class Space {
         return toString(0, n);
     }
 
-    public static Space Random(int n, int m) {
-        Space s = new Space(n, m);
+    public static Universe Random(int n, int m) {
+        Universe s = new Universe(n, m);
         Random r = new Random();
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 byte value = (byte) (Math.abs(r.nextInt()) % 2);
-                s.currentSpace[i][j] = value;
+                s.currentUniverse[i][j] = value;
             }
         }
 

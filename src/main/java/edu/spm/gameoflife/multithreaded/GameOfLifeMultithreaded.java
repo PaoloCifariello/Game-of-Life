@@ -2,7 +2,7 @@ package edu.spm.gameoflife.multithreaded;
 
 import edu.spm.gameoflife.GameOfLifeComputation;
 import edu.spm.gameoflife.core.Interval;
-import edu.spm.gameoflife.core.Space;
+import edu.spm.gameoflife.core.Universe;
 
 import java.util.concurrent.*;
 
@@ -13,17 +13,17 @@ import java.util.concurrent.*;
  */
 public class GameOfLifeMultithreaded implements GameOfLifeComputation {
 
-    public long start(Space space, int nIterations, int nThreads) throws InterruptedException, BrokenBarrierException {
-        CyclicBarrier barrier = new CyclicBarrier(nThreads, space::swap);
+    public long start(Universe universe, int nIterations, int nThreads) throws InterruptedException, BrokenBarrierException {
+        CyclicBarrier barrier = new CyclicBarrier(nThreads, universe::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
         final long startTime = System.currentTimeMillis();
-        /* split the space into nThreads intervals */
-        Interval[] invervals = space.split(nThreads);
+        /* split the universe into nThreads intervals */
+        Interval[] invervals = universe.split(nThreads);
         /* insert a new task/thread for each interval inside the thread pool */
         for (int j = 0; j < nThreads; j++){
             pool.submit(
-                    new GameOfLifeWorker(space, invervals[j], nIterations, barrier)
+                    new GameOfLifeWorker(universe, invervals[j], nIterations, barrier)
             );
         }
         /* prevent newer tasks to be submitted */

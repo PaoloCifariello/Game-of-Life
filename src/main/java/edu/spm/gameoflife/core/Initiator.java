@@ -6,20 +6,20 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * This class permits to initialize a Space in a random way or using a CSV file.
+ * This class permits to initialize a Universe in a random way or using a CSV file.
  * File must contains a list of x  y coordinates identifying ALIVE cells
  *
  * @author Paolo Cifariello
  */
 public class Initiator {
 
-    public static Space init(String initiator, int n, int m) {
-        Space s;
+    public static Universe init(String initiator, int n, int m) {
+        Universe s;
 
         if (initiator.equals("random")) {
-            s = Space.Random(n, m);
+            s = Universe.Random(n, m);
         } else {
-            s = new Space(n, m);
+            s = new Universe(n, m);
             s.initialize();
 
             /* set all cell to EMPTY */
@@ -29,22 +29,22 @@ public class Initiator {
         return s;
     }
 
-    private static void initFromFile(Space space, String initiator) {
+    private static void initFromFile(Universe universe, String initiator) {
         try {
             InputStream is = Initiator.class.getClassLoader().getResourceAsStream(initiator + ".lif");
             CSVReader reader = new CSVReader(new InputStreamReader(is), ' ');
-            int rows = space.rows(),
-                columns = space.columns();
+            int rows = universe.rows(),
+                columns = universe.columns();
 
             String [] nextLine;
             while ((nextLine = reader.readNext()) != null) {
                 int x = normalize(Integer.parseInt(nextLine[0]), columns),
                         y = normalize(Integer.parseInt(nextLine[1]), rows);
 
-                space.setCellValue(y, x, Space.ALIVE);
+                universe.setCellValue(y, x, Universe.ALIVE);
             }
 
-            space.swap();
+            universe.swap();
         } catch (IOException e) {
             System.err.println("Cannot load initiator");
         }

@@ -7,7 +7,7 @@ usage() {
     echo "       -c    specify computation type";
     echo "       -i    specify iterations";
     echo "       -r    specify number of test repetition";
-    echo "       -s    specify space size" 1>&2; exit 1;
+    echo "       -s    specify universe size" 1>&2; exit 1;
     }
 
 while getopts ":c:s:i:r:f:" o; do

@@ -1,23 +1,23 @@
 package edu.spm.gameoflife.skandium;
 
 import cl.niclabs.skandium.muscles.Merge;
-import edu.spm.gameoflife.core.Space;
+import edu.spm.gameoflife.core.Universe;
 
 /**
  * GameOfLife
  *
  * @author Paolo Cifariello
  */
-public class Merger implements Merge<Space, Space> {
-    private Space space;
+public class Merger implements Merge<Universe, Universe> {
+    private Universe universe;
 
-    public Merger(Space space) {
-        this.space = space;
+    public Merger(Universe universe) {
+        this.universe = universe;
     }
 
     @Override
-    public Space merge(Space[] spaces) throws Exception {
-        space.swap();
-        return space;
+    public Universe merge(Universe[] universes) throws Exception {
+        universe.swap();
+        return universe;
     }
 }

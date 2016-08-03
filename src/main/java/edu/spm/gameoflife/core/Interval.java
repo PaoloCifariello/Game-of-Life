@@ -1,7 +1,7 @@
 package edu.spm.gameoflife.core;
 
 /**
- * This class contains information about an Interval of a GOL Space.
+ * This class contains information about an Interval of a GOL Universe.
  * An instance identify a partition using a row index and the number of rows in that chunk.
  *
  * @author Paolo Cifariello
