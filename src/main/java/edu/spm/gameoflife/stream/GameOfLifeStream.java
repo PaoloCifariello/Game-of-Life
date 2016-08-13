@@ -10,25 +10,26 @@ import java.util.concurrent.*;
 public class GameOfLifeStream implements GameOfLifeComputation {
 
     public long start(Universe universe, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
+        CyclicBarrier barrier = new CyclicBarrier(nThreads, universe::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
         final long startTime = System.currentTimeMillis();
         Interval[] intervals = universe.split(nThreads);
-        GameOfLifeExecutor golEx = new GameOfLifeExecutor(universe);
+        GameOfLifeExecutor golEx = new GameOfLifeExecutor(universe, nIterations, barrier);
 
-        for (int i = 0; i < nIterations; i++) {
-            pool.submit(
-                    () -> Arrays.stream(intervals)
+        pool.submit(
+                () -> Arrays.stream(intervals)
                             .parallel()
-                            .forEach(golEx::execute)).get();
-
-            universe.swap();
-        }
+                            .forEach(golEx::execute)
+        );
         // https://blog.krecan.net/2014/03/18/how-to-specify-thread-pool-for-java-8-parallel-streams/
 
+        /* prevent newer tasks to be submitted */
+        pool.shutdown();
+        /* wait at most 2 minutes for termination of all tasks */
+        pool.awaitTermination(2, TimeUnit.MINUTES);
 
         final long endTime = System.currentTimeMillis();
-
         return endTime - startTime;
     }
 }
