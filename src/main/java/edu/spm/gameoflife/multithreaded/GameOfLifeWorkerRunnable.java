@@ -1,8 +1,9 @@
-package edu.spm.gameoflife.stream;
+package edu.spm.gameoflife.multithreaded;
 
 import edu.spm.gameoflife.core.Interval;
 import edu.spm.gameoflife.core.LifeSimulator;
 import edu.spm.gameoflife.core.Universe;
+import edu.spm.gameoflife.stream.GameOfLifeWorker;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
@@ -12,30 +13,27 @@ import java.util.concurrent.CyclicBarrier;
  *
  * @author Paolo Cifariello
  */
-public class GameOfLifeExecutor {
-    protected Universe universe;
+public class GameOfLifeWorkerRunnable extends GameOfLifeWorker implements Runnable {
     protected Interval interval;
     protected int nIterations;
-    protected final CyclicBarrier barrier;
+    protected CyclicBarrier barrier;
 
-    public GameOfLifeExecutor(Universe universe, Interval interval, int nIterations , CyclicBarrier barrier) {
-        this(universe, nIterations, barrier);
+    public GameOfLifeWorkerRunnable(Universe universe, Interval interval, int nIterations, CyclicBarrier barrier) {
+        super(universe);
         this.interval = interval;
-    }
-
-    public GameOfLifeExecutor(Universe universe, int nIterations , CyclicBarrier barrier) {
-        this.universe = universe;
-        this.nIterations = nIterations ;
+        this.nIterations = nIterations;
         this.barrier = barrier;
     }
 
-    public void execute(Interval interval) {
+    @Override
+    public void run() {
         for (int i = 0; i < nIterations; i++) {
             LifeSimulator.makeCycle(universe, interval.startRow, interval.nRows);
             try {
                 barrier.await();
-            } catch (InterruptedException | BrokenBarrierException ex) { }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
     }
 }

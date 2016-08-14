@@ -23,7 +23,7 @@ public class GameOfLifeMultithreaded implements GameOfLifeComputation {
         /* insert a new task/thread for each interval inside the thread pool */
         for (int j = 0; j < nThreads; j++){
             pool.submit(
-                    new GameOfLifeWorker(universe, invervals[j], nIterations, barrier)
+                    new GameOfLifeWorkerRunnable(universe, invervals[j], nIterations, barrier)
             );
         }
         /* prevent newer tasks to be submitted */

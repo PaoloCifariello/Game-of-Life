@@ -1,6 +1,9 @@
 package edu.spm.gameoflife.core;
 
+import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * This class contains information about a GOL Universe, it stores values of all cells
@@ -111,6 +114,10 @@ public class Universe {
         }
 
         return intervals;
+    }
+
+    public IntStream parallelStream() {
+        return IntStream.range(0, this.rows()).parallel();
     }
 
     /**

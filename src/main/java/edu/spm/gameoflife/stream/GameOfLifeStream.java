@@ -6,6 +6,7 @@ import edu.spm.gameoflife.core.Universe;
 
 import java.util.Arrays;
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 public class GameOfLifeStream implements GameOfLifeComputation {
 
@@ -14,14 +15,15 @@ public class GameOfLifeStream implements GameOfLifeComputation {
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
         final long startTime = System.currentTimeMillis();
-        Interval[] intervals = universe.split(nThreads);
-        GameOfLifeExecutor golEx = new GameOfLifeExecutor(universe, nIterations, barrier);
+        GameOfLifeWorker golEx = new GameOfLifeWorker(universe);
 
-        pool.submit(
-                () -> Arrays.stream(intervals)
-                            .parallel()
-                            .forEach(golEx::execute)
-        );
+        for (int i = 0; i < nIterations; i++) {
+            pool.submit(() -> universe.parallelStream().forEach(golEx::execute))
+                    .get();
+
+            universe.swap();
+        }
+
         // https://blog.krecan.net/2014/03/18/how-to-specify-thread-pool-for-java-8-parallel-streams/
 
         /* prevent newer tasks to be submitted */
