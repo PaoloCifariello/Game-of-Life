@@ -8,7 +8,7 @@ DEFAULT_REPETITIONS=5
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
-while getopts ":s:i:r:" o; do
+while getopts ":s:i:r:t:" o; do
     case "${o}" in
         s)
             size=${OPTARG}
@@ -18,6 +18,9 @@ while getopts ":s:i:r:" o; do
             ;;
         r)
             repetitions=${OPTARG}
+            ;;
+        t)
+            nthreads=${OPTARG}
             ;;
     esac
 done
@@ -42,11 +45,22 @@ echo "" >> ${FILE}
 echo "SIZE: ${size} x ${size}" >> ${FILE}
 echo "ITERATIONS: ${iterations}" >> ${FILE}
 echo "REPETITIONS: ${repetitions}" >> ${FILE}
+
+if [ ! -z "${nthreads}" ]; then
+    echo "NTHREADS: ${nthreads}" >> ${FILE}
+fi
+
 echo "" >> ${FILE}
 
 for computation in "${COMPUTATIONS[@]}"; do
     echo "Benchmark with ${computation}" >> ${FILE}
     echo "" >> ${FILE}
-    ${CURRENT_DIR}/benchmark.sh -c $computation -s $size -i $iterations -r $repetitions -f ${FILE}
+
+    if [ -z "${nthreads}" ]; then
+        ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE}
+    else
+        ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t ${nthreads}
+    fi
+
     echo "" >> ${FILE}
 done

@@ -3,14 +3,15 @@
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 usage() {
-    echo "Usage: $0 -c [sequential | multithreaded | stream | skandium] -s size -i iterations";
+    echo "Usage: $0 -c [sequential | multithreaded | stream | skandium] -s size -i iterations -r repetitions -t nthreads";
     echo "       -c    specify computation type";
     echo "       -i    specify iterations";
     echo "       -r    specify number of test repetition";
-    echo "       -s    specify universe size" 1>&2; exit 1;
+    echo "       -s    specify universe size";
+    echo "       -t    specify number of threads"; 1>&2; exit 1;
     }
 
-while getopts ":c:s:i:r:f:" o; do
+while getopts ":c:s:i:r:f:t:" o; do
     case "${o}" in
         c)
             c=${OPTARG}
@@ -28,13 +29,15 @@ while getopts ":c:s:i:r:f:" o; do
         f)
             f=${OPTARG}
             ;;
+        t)
+            t=${OPTARG}
+            ;;
         *)
             usage
             ;;
     esac
 done
 shift $((OPTIND-1))
-
 
 if [ -z "${c}" ] || [ -z "${s}" ] || [ -z "${i}" ] || [ -z "${r}" ]; then
     usage
@@ -58,8 +61,13 @@ echo "ROWS=${s}" >> ${PROPERTIES_FILE}
 echo "COLUMNS=${s}" >> ${PROPERTIES_FILE}
 echo "COMPUTATION=${c}" >> ${PROPERTIES_FILE}
 
+if [ ! -z "${t}" ]; then
+    echo "NTHREADS=${t}" >> ${PROPERTIES_FILE}
+fi
+
+
 TOTAL_TIME=0
-for i in $(seq 1 $r); do
+for i in $(seq 1 ${r}); do
     O="`${JAVA_PATH} -jar ${CURRENT_DIR}/../target/GameOfLife-1.0.jar ${PROPERTIES_FILE}`"
     echo "${i}/${r} -> ${O}" >> ${f}
     TOTAL_TIME=$((${TOTAL_TIME}+${O}))
