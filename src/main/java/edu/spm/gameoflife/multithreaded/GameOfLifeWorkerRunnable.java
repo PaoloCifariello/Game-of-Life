@@ -15,25 +15,14 @@ import java.util.concurrent.CyclicBarrier;
  */
 public class GameOfLifeWorkerRunnable extends GameOfLifeWorker implements Runnable {
     protected Interval interval;
-    protected int nIterations;
-    protected CyclicBarrier barrier;
 
     public GameOfLifeWorkerRunnable(Universe universe, Interval interval, int nIterations, CyclicBarrier barrier) {
-        super(universe);
+        super(universe, nIterations, barrier);
         this.interval = interval;
-        this.nIterations = nIterations;
-        this.barrier = barrier;
     }
 
     @Override
     public void run() {
-        for (int i = 0; i < nIterations; i++) {
-            LifeSimulator.makeCycle(universe, interval.startRow, interval.nRows);
-            try {
-                barrier.await();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        execute(interval);
     }
 }

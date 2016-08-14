@@ -15,15 +15,9 @@ public class GameOfLifeStream implements GameOfLifeComputation {
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
         final long startTime = System.currentTimeMillis();
-        GameOfLifeWorker golEx = new GameOfLifeWorker(universe);
+        GameOfLifeWorker golEx = new GameOfLifeWorker(universe, nIterations, barrier);
 
-        for (int i = 0; i < nIterations; i++) {
-            pool.submit(() -> universe.parallelStream().forEach(golEx::execute))
-                    .get();
-
-            universe.swap();
-        }
-
+        pool.submit(() -> universe.parallelStream(nThreads).forEach(golEx::execute)).get();
         // https://blog.krecan.net/2014/03/18/how-to-specify-thread-pool-for-java-8-parallel-streams/
 
         /* prevent newer tasks to be submitted */

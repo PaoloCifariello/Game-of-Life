@@ -116,8 +116,14 @@ public class Universe {
         return intervals;
     }
 
-    public IntStream parallelStream() {
-        return IntStream.range(0, this.rows()).parallel();
+    /**
+     * Produce a stream of disjoint intervals from the Universe
+     *
+     * @param nPartitions number of intervals
+     * @return a Stream of Interval
+     */
+    public Stream<Interval> parallelStream(int nPartitions) {
+        return Arrays.stream(this.split(nPartitions)).parallel();
     }
 
     /**
