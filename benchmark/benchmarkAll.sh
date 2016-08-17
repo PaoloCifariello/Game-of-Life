@@ -4,6 +4,7 @@ COMPUTATIONS=("sequential" "multithreaded" "stream" "skandium")
 DEFAULT_SIZE=1000
 DEFAULT_ITERATIONS=500
 DEFAULT_REPETITIONS=5
+DEFAULT_NTHREADS=2
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -38,7 +39,12 @@ if [ -z "${repetitions}" ]; then
     repetitions=${DEFAULT_REPETITIONS}
 fi
 
+if [ -z "${nthreads}" ]; then
+    nthreads=${DEFAULT_NTHREADS}
+fi
+
 FILE=${CURRENT_DIR}/results/$(date +'%d-%m-%Y_%H-%M-%S').txt
+
 
 echo "Test executed on $(date +'%d/%m/%Y')" > ${FILE}
 echo "" >> ${FILE}
@@ -53,14 +59,19 @@ fi
 echo "" >> ${FILE}
 
 for computation in "${COMPUTATIONS[@]}"; do
+    echo "==================================" >> ${FILE}
+    echo "" >> ${FILE}
     echo "Benchmark with ${computation}" >> ${FILE}
     echo "" >> ${FILE}
 
-    if [ -z "${nthreads}" ]; then
-        ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE}
+    if [ "$computation" == "sequential" ]; then
+        ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t 1
+        echo "" >> ${FILE}
     else
-        ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t ${nthreads}
+        for nth in $(seq 2 2 ${nthreads}); do
+            echo "${nth} Threads" >> ${FILE}
+            ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t ${nth}
+            echo "" >> ${FILE}
+        done
     fi
-
-    echo "" >> ${FILE}
 done
