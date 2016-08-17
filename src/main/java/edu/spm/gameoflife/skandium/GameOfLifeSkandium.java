@@ -19,7 +19,8 @@ public class GameOfLifeSkandium implements GameOfLifeComputation {
 
     public long start(Universe universe, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
 
-        /* initialization for nThreads */
+        final long startTime = System.currentTimeMillis();
+
         Skandium s = new Skandium(nThreads);
         For<Universe> forLoop =
                 new For<Universe>(
@@ -32,7 +33,7 @@ public class GameOfLifeSkandium implements GameOfLifeComputation {
         /* getting the output stream from the created skeleton */
         Stream<Universe, Universe> stream = s.newStream(forLoop);
         Future<Universe> outUniverse = stream.input(universe);
-        final long startTime = System.currentTimeMillis();
+
         outUniverse.get();
         final long endTime = System.currentTimeMillis();
 

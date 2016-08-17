@@ -1,6 +1,7 @@
 package edu.spm.gameoflife.skandium;
 
 import cl.niclabs.skandium.muscles.Merge;
+import edu.spm.gameoflife.core.Interval;
 import edu.spm.gameoflife.core.Universe;
 
 /**
@@ -8,7 +9,7 @@ import edu.spm.gameoflife.core.Universe;
  *
  * @author Paolo Cifariello
  */
-public class Merger implements Merge<Universe, Universe> {
+public class Merger implements Merge<Interval, Universe> {
     private Universe universe;
 
     public Merger(Universe universe) {
@@ -16,7 +17,7 @@ public class Merger implements Merge<Universe, Universe> {
     }
 
     @Override
-    public Universe merge(Universe[] universes) throws Exception {
+    public Universe merge(Interval[] intervals) {
         universe.swap();
         return universe;
     }

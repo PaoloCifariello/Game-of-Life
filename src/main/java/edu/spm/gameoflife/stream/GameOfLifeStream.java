@@ -11,12 +11,13 @@ import java.util.stream.IntStream;
 public class GameOfLifeStream implements GameOfLifeComputation {
 
     public long start(Universe universe, int nIterations, int nThreads) throws ExecutionException, InterruptedException {
+
+        final long startTime = System.currentTimeMillis();
+
         CyclicBarrier barrier = new CyclicBarrier(nThreads, universe::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
-        final long startTime = System.currentTimeMillis();
         GameOfLifeWorker golEx = new GameOfLifeWorker(universe, nIterations, barrier);
-
         pool.submit(() -> universe.parallelStream(nThreads).forEach(golEx::execute)).get();
         // https://blog.krecan.net/2014/03/18/how-to-specify-thread-pool-for-java-8-parallel-streams/
 

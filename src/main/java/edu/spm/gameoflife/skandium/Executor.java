@@ -10,7 +10,7 @@ import edu.spm.gameoflife.core.Universe;
  *
  * @author Paolo Cifariello
  */
-public class Executor implements Execute<Interval, Universe> {
+public class Executor implements Execute<Interval, Interval> {
     private Universe universe;
 
     public Executor(Universe universe) {
@@ -18,8 +18,8 @@ public class Executor implements Execute<Interval, Universe> {
     }
 
     @Override
-    public Universe execute(Interval interval) throws Exception {
+    public Interval execute(Interval interval) {
         LifeSimulator.makeCycle(universe, interval.startRow, interval.nRows);
-        return universe;
+        return interval;
     }
 }

@@ -14,10 +14,12 @@ import java.util.concurrent.*;
 public class GameOfLifeMultithreaded implements GameOfLifeComputation {
 
     public long start(Universe universe, int nIterations, int nThreads) throws InterruptedException, BrokenBarrierException {
+
+        final long startTime = System.currentTimeMillis();
+
         CyclicBarrier barrier = new CyclicBarrier(nThreads, universe::swap);
         ExecutorService pool = Executors.newFixedThreadPool(nThreads);
 
-        final long startTime = System.currentTimeMillis();
         /* split the universe into nThreads intervals */
         Interval[] invervals = universe.split(nThreads);
         /* insert a new task/thread for each interval inside the thread pool */

@@ -18,7 +18,7 @@ public class Splitter implements Split<Universe, Interval> {
     }
 
     @Override
-    public Interval[] split(Universe universe) throws Exception {
+    public Interval[] split(Universe universe) {
         if (this.splitted != null)
             return this.splitted;
 
