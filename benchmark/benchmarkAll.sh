@@ -69,7 +69,7 @@ for computation in "${COMPUTATIONS[@]}"; do
         ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t 1
         echo "" >> ${FILE}
     else
-        for nth in $(seq 2 2 ${nthreads}); do
+        for nth in $(seq 1 ${nthreads}); do
             echo "${nth} Threads"
             echo "${nth} Threads" >> ${FILE}
             ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t ${nth}
