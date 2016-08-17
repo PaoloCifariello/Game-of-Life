@@ -64,11 +64,13 @@ for computation in "${COMPUTATIONS[@]}"; do
     echo "Benchmark with ${computation}" >> ${FILE}
     echo "" >> ${FILE}
 
+    echo "$computation"
     if [ "$computation" == "sequential" ]; then
         ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t 1
         echo "" >> ${FILE}
     else
         for nth in $(seq 2 2 ${nthreads}); do
+            echo "${nth} Threads"
             echo "${nth} Threads" >> ${FILE}
             ${CURRENT_DIR}/benchmark.sh -c ${computation} -s ${size} -i ${iterations} -r ${repetitions} -f ${FILE} -t ${nth}
             echo "" >> ${FILE}
