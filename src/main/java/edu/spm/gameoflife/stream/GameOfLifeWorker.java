@@ -32,4 +32,10 @@ public class GameOfLifeWorker {
             }
         }
     }
+
+    public void execute(int i) {
+        for (int j = 0; j < universe.columns(); j++) {
+            LifeSimulator.makeCycle(i, j, universe);
+        }
+    }
 }

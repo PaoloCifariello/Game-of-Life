@@ -38,7 +38,7 @@ public abstract class LifeSimulator {
      * @param j columns index of the cell
      * @param universe universe on which the simulation step has to be performed
      */
-    private static void makeCycle(int i, int j, Universe universe) {
+    public static void makeCycle(int i, int j, Universe universe) {
         int currentAliveNeighbors = getAliveNeighbors(i, j, universe);
         byte cellCurrentValue = universe.getCellValue(i, j);
         byte cellNextValue;

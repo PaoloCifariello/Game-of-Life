@@ -127,6 +127,15 @@ public class Universe {
     }
 
     /**
+     * Produce a stream of disjoint intervals from the Universe
+     *
+     * @return a Stream of Interval
+     */
+    public IntStream parallelStream() {
+        return IntStream.range(0, this.rows()).parallel();
+    }
+
+    /**
      * produce a String representation of a subset of the actual Universe
      *
      * @param start starting row index
