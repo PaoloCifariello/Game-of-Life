@@ -21,7 +21,7 @@ public abstract class LifeSimulator {
      *
      * @param universe universe on which the simulation step has to be performed
      * @param startRow index of starting row from which the simulation has to be performed
-     * @param nRows number of rows to consider for the simulation
+     * @param nRows    number of rows to consider for the simulation
      */
     public static void makeCycle(Universe universe, int startRow, int nRows) {
         for (int i = startRow; i < startRow + nRows; i++) {
@@ -34,12 +34,12 @@ public abstract class LifeSimulator {
     /**
      * Perform a simulation step on a single cell
      *
-     * @param i row index of the cell
-     * @param j columns index of the cell
+     * @param i        row index of the cell
+     * @param j        columns index of the cell
      * @param universe universe on which the simulation step has to be performed
      */
     private static void makeCycle(int i, int j, Universe universe) {
-        int currentAliveNeighbors = getAliveNeighbors(i, j, universe);
+        int currentAliveNeighbors = getAliveNeighborsModulo(i, j, universe);
         byte cellCurrentValue = universe.getCellValue(i, j);
         byte cellNextValue;
 
@@ -56,8 +56,8 @@ public abstract class LifeSimulator {
     /**
      * Get number of alive neighbors of a specific cell
      *
-     * @param i row index of the cell
-     * @param j columns index of the cell
+     * @param i        row index of the cell
+     * @param j        columns index of the cell
      * @param universe universe considered
      * @return number of neighobrs alive
      */
@@ -89,14 +89,17 @@ public abstract class LifeSimulator {
     /**
      * Get number of alive neighbors of a specific cell
      *
-     * @param i row index of the cell
-     * @param j columns index of the cell
+     * @param i        row index of the cell
+     * @param j        columns index of the cell
      * @param universe universe considered
      * @return number of neighobrs alive
      */
     public static int getAliveNeighborsModulo(int i, int j, Universe universe) {
         int n = universe.rows(), m = universe.columns();
-        int prevRow = (i - 1 + n) % n, succRow = (i + 1) % n, prevColumn = (j - 1 + m) % m, succColumn = (j + 1) % m;
+        int prevRow = Math.floorMod((i - 1), n),
+                succRow = Math.floorMod((i + 1), n),
+                prevColumn = Math.floorMod((j - 1), m),
+                succColumn = Math.floorMod((j + 1), m);
 
         return universe.getCellValue(prevRow, prevColumn)
                 + universe.getCellValue(prevRow, j)
