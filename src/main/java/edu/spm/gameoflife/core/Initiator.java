@@ -14,19 +14,19 @@ import java.io.InputStreamReader;
 public class Initiator {
 
     public static Universe init(String initiator, int n, int m) {
-        Universe s;
+        Universe universe;
 
         if (initiator.equals("random")) {
-            s = Universe.Random(n, m);
+            universe = Universe.Random(n, m);
         } else {
-            s = new Universe(n, m);
-            s.initialize();
+            universe = new Universe(n, m);
 
-            /* set all cell to EMPTY */
-            initFromFile(s, initiator);
+            /* set all cell states to EMPTY */
+            universe.initialize();
+            initFromFile(universe, initiator);
         }
 
-        return s;
+        return universe;
     }
 
     private static void initFromFile(Universe universe, String initiator) {

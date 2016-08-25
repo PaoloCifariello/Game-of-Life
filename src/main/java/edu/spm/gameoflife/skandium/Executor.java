@@ -6,7 +6,7 @@ import edu.spm.gameoflife.core.LifeSimulator;
 import edu.spm.gameoflife.core.Universe;
 
 /**
- * GameOfLife
+ * GameOfLife Executor
  *
  * @author Paolo Cifariello
  */

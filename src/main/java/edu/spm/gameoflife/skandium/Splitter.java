@@ -5,7 +5,7 @@ import edu.spm.gameoflife.core.Interval;
 import edu.spm.gameoflife.core.Universe;
 
 /**
- * GameOfLife
+ * GameOfLife Splitter
  *
  * @author Paolo Cifariello
  */

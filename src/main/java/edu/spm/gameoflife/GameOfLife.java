@@ -95,7 +95,6 @@ public class GameOfLife {
 
         if (golComputation != null) {
             executionTime = golComputation.start(universe, iterations, nThreads);
-            //System.out.println("Execution time using " + computation + ": " + executionTime);
             System.out.println(executionTime);
         }
         System.exit(0);
@@ -106,7 +105,7 @@ public class GameOfLife {
         FileReader reader = new FileReader(configFile);
         Properties props = new Properties();
 
-        // load the properties file:
+        // load properties file:
         props.load(reader);
         return props;
     }

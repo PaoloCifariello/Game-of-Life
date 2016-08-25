@@ -59,7 +59,7 @@ public abstract class LifeSimulator {
      * @param i        row index of the cell
      * @param j        columns index of the cell
      * @param universe universe considered
-     * @return number of neighobrs alive
+     * @return number of alive neighbors
      */
     public static int getAliveNeighbors(int i, int j, Universe universe) {
         int n = universe.rows(), m = universe.columns();
@@ -92,7 +92,7 @@ public abstract class LifeSimulator {
      * @param i        row index of the cell
      * @param j        columns index of the cell
      * @param universe universe considered
-     * @return number of neighobrs alive
+     * @return number of alive neighbors
      */
     public static int getAliveNeighborsModulo(int i, int j, Universe universe) {
         int n = universe.rows(), m = universe.columns();

@@ -2,7 +2,6 @@ package edu.spm.gameoflife.core;
 
 import java.util.Arrays;
 import java.util.Random;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -130,13 +129,13 @@ public class Universe {
      * produce a String representation of a subset of the actual Universe
      *
      * @param start starting row index
-     * @param nrows number of rows to consider
+     * @param nRows number of rows to consider
      * @return String representation
      */
-    public String toString(int start, int nrows) {
+    public String toString(int start, int nRows) {
         StringBuilder sb = new StringBuilder();
 
-        for (int i = start; i < start + nrows; i++) {
+        for (int i = start; i < start + nRows; i++) {
             for (int j = 0; j < m; j++) {
                 sb.append(currentUniverse[i][j] + "\t");
             }

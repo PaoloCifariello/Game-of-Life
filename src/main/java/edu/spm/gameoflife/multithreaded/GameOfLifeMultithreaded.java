@@ -7,7 +7,7 @@ import edu.spm.gameoflife.core.Universe;
 import java.util.concurrent.*;
 
 /**
- * GameOfLife
+ * GameOfLife multithreaded computation
  *
  * @author Paolo Cifariello
  */
@@ -22,7 +22,7 @@ public class GameOfLifeMultithreaded implements GameOfLifeComputation {
 
         /* split the universe into nThreads intervals */
         Interval[] invervals = universe.split(nThreads);
-        /* insert a new task/thread for each interval inside the thread pool */
+        /* insert inside the thread pool a new task/thread for each interval */
         for (int j = 0; j < nThreads; j++){
             pool.submit(
                     new GameOfLifeWorkerRunnable(universe, invervals[j], nIterations, barrier)
@@ -30,8 +30,8 @@ public class GameOfLifeMultithreaded implements GameOfLifeComputation {
         }
         /* prevent newer tasks to be submitted */
         pool.shutdown();
-        /* wait at most 2 minutes for termination of all tasks */
-        pool.awaitTermination(2, TimeUnit.MINUTES);
+        /* wait at most 15 minutes for termination of all tasks */
+        pool.awaitTermination(15, TimeUnit.MINUTES);
 
         final long endTime = System.currentTimeMillis();
         return endTime - startTime;

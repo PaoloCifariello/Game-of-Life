@@ -4,6 +4,11 @@ import edu.spm.gameoflife.GameOfLifeComputation;
 import edu.spm.gameoflife.core.LifeSimulator;
 import edu.spm.gameoflife.core.Universe;
 
+/**
+ * GameOfLife sequential computation
+ *
+ * @author Paolo Cifariello
+ */
 public class GameOfLifeSequential implements GameOfLifeComputation {
 
     public long start(Universe universe, int nIterations, int nThreads) {
