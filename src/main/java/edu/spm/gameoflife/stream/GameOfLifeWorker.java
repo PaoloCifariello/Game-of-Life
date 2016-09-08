@@ -7,7 +7,7 @@ import edu.spm.gameoflife.core.Universe;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * GameOfLife
+ * GameOfLife thread code
  *
  * @author Paolo Cifariello
  */

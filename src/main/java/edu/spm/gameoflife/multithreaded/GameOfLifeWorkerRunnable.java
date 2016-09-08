@@ -9,7 +9,7 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 /**
- * GameOfLife
+ * GameOfLife thread code, simply calls execute from stream code
  *
  * @author Paolo Cifariello
  */
