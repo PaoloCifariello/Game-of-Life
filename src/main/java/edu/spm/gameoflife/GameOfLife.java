@@ -112,12 +112,9 @@ public class GameOfLife {
 
     private static void initGraphics(Universe universe, int scale, int offset) {
         JFrame frame = new JFrame("Game of Life");
-        Graphics g = frame.getGraphics();
-        frame.pack();
         Insets insets = frame.getInsets();
         frame.getContentPane().add(new GameOfLifeGUI(universe, scale, offset), BorderLayout.CENTER);
-        frame.paint(g);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(insets.left + insets.right + (universe.columns() * scale), insets.top + insets.bottom + (universe.rows() * scale));
         frame.setVisible(true);
     }
